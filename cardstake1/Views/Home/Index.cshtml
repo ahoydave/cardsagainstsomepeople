@@ -2,44 +2,33 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="panel panel-default">
+    <div class="panel-heading" id="question_heading">Question</div>
+    <div class="panel-body" id="question_content"></div>
+    <button id="confirmButton" class="btn btn-default" disabled>Choose it.</button>
 </div>
 
-<div>
-    <ul id="cards">
-    </ul>
+<div class="btn-group-vertical" id="answers" >
+    
 </div>
 
 @section scripts{
 <script type="text/javascript">
+    answerClick = function (button) {
+        $('#confirmButton')[0].disabled = false;
+        $('#confirmButton')[0].textContent = "Choose: " + button.textContent;
+        button.disabled = true;
+    }
+        
     $(function () {
         $.getJSON('../api/cardapi/Q', function (cardsPayload) {
-            //$(cardsPayload).each(function (i, item) {
-            //    $('#cards').append('<li>' + item + '</li>');
-            //});
-            $('#cards').append('<li>' + cardsPayload + '</li>');
+            $('#question_content').append(cardsPayload);
         });
-        $.getJSON('../api/cardapi/A', function (cardsPayload) {
-            //$(cardsPayload).each(function (i, item) {
-            //    $('#cards').append('<li>' + item + '</li>');
-            //});
-            $('#cards').append('<li>' + cardsPayload + '</li>');
-        });
-        $.getJSON('../api/cardapi/A', function (cardsPayload) {
-            //$(cardsPayload).each(function (i, item) {
-            //    $('#cards').append('<li>' + item + '</li>');
-            //});
-            $('#cards').append('<li>' + cardsPayload + '</li>');
-        });
-        $.getJSON('../api/cardapi/A', function (cardsPayload) {
-            //$(cardsPayload).each(function (i, item) {
-            //    $('#cards').append('<li>' + item + '</li>');
-            //});
-            $('#cards').append('<li>' + cardsPayload + '</li>');
-        });
+        for (i = 0; i < 30; i++) {
+            $.getJSON('../api/cardapi/A', function (cardsPayload) {
+                $('#answers').append('<button onclick="answerClick(this)" type="button" class="btn btn-default">' + cardsPayload + '</button>');
+            });
+        }
     });
     </script>
 }
