@@ -14,21 +14,25 @@
 
 @section scripts{
 <script type="text/javascript">
-    answerClick = function (button) {
-        $('#confirmButton')[0].disabled = false;
-        $('#confirmButton')[0].textContent = "Choose: " + button.textContent;
-        button.disabled = true;
-    }
-        
+    var answerCards = [];
+    
     $(function () {
         $.getJSON('../api/cardapi/Q', function (cardsPayload) {
-            $('#question_content').append(cardsPayload);
+            $('#question_content').append(cardsPayload.text);
         });
         for (i = 0; i < 30; i++) {
             $.getJSON('../api/cardapi/A', function (cardsPayload) {
-                $('#answers').append('<button onclick="answerClick(this)" type="button" class="btn btn-default">' + cardsPayload + '</button>');
+                answerCards.push(cardsPayload);
+                $('#answers').append('<button type="button" class="btn btn-default ansCard">' + cardsPayload.text + '</button>');
             });
-        }
+        };
+        $(".ansCard").click(function () {
+            //this currently isn't getting called because the ansCard element array is empty at this point - the api calls haven't returned
+            //$(".ansCard").slideDown();
+            $('#confirmButton')[0].disabled = false;
+            $('#confirmButton')[0].textContent = "Choose: " + $(this)[0].textContent;
+            //$(this).slideUp();
+        });
     });
     </script>
 }

@@ -15,26 +15,21 @@ namespace cardstake1.Controllers
     {
         // GET: api/CardApi
         [Route("api/cardapi/A"), HttpGet]
-        public string GetAnswer()
+        public Card GetAnswer()
         {
-            return CardRepo.Instance.GetNextAnswer().text;
+            return CardRepo.Instance.GetNextAnswer();
         }
 
         [Route("api/cardapi/Q"), HttpGet]
-        public string GetQuestion()
+        public Card GetQuestion()
         {
-            return CardRepo.Instance.GetNextQuestion().text;
-        }
-
-        // GET: api/CardApi/5
-        public string Get(int id)
-        {
-            return "value";
+            return CardRepo.Instance.GetNextQuestion();
         }
 
         // POST: api/CardApi
         public void Post([FromBody]string value)
         {
+
         }
 
         // PUT: api/CardApi/5
