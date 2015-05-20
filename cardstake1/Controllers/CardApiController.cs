@@ -17,13 +17,13 @@ namespace cardstake1.Controllers
         [Route("api/cardapi/A"), HttpGet]
         public Card GetAnswer()
         {
-            return CardRepo.Instance.GetNextAnswer();
+            throw new NotImplementedException();
         }
 
         [Route("api/cardapi/Q"), HttpGet]
         public Card GetQuestion()
         {
-            return CardRepo.Instance.GetNextQuestion();
+            throw new NotImplementedException();
         }
 
         // POST: api/CardApi

@@ -11,20 +11,6 @@ namespace cardstake1.Models
         private IEnumerator<Card> _questionCards = null;
         private IEnumerator<Card> _answerCards = null;
 
-        private static CardRepo _instance = null;
-        public static CardRepo Instance
-        {
-            get {
-                if (_instance == null)
-                    _instance = new CardRepo();
-                return _instance;
-            }
-        }
-
-        public void SetCustomString(string cardsJson) {
-            _instance = new CardRepo(cardsJson);
-        }
-
         public CardRepo(String cardsJson)
         {
             LoadCards(cardsJson);
