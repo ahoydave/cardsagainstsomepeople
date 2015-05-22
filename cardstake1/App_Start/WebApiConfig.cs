@@ -11,11 +11,11 @@ namespace cardstake1
         {
             config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{type}",
-                defaults: new { type = "A" }
-            );
+            //config.Routes.MapHttpRoute(
+            //    name: "CardApi",
+            //    routeTemplate: "api/{controller}/{type}",
+            //    defaults: new { type = "A" }
+            //);
         }
     }
 }

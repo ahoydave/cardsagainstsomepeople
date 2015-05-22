@@ -9,10 +9,21 @@ namespace cardstake1.Models
 
     public class CahGame
     {
+        private static CahGame _instance = null;
+        public static CahGame Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new CahGame();
+                return _instance;
+            }
+        }
+
         private CardRepo _cards = null;
         private Card _winningCard;
-        private int _winningPlayer;
-        private Dictionary<int, Card> _submittedAnswers = new Dictionary<int, Card>();
+        private String _winningPlayer;
+        private Dictionary<String, Card> _submittedAnswers = new Dictionary<String, Card>();
 
         public GameState GameState { get; set; }
 
@@ -46,7 +57,7 @@ namespace cardstake1.Models
             return _cards.GetNextAnswer();
         }
 
-        public void SubmitAnswer(Card answer, int playerId)
+        public void SubmitAnswer(Card answer, String playerId)
         {
             if (GameState == GameState.SubmitAnswers)
                 if (!_submittedAnswers.ContainsKey(playerId))
@@ -90,11 +101,11 @@ namespace cardstake1.Models
             }
         }
 
-        public bool CheckIfWon(int playerId)
+        public bool CheckIfWon(String playerId)
         {
             if (GameState == GameState.RoundEnd)
             {
-                return playerId == _winningPlayer;
+                return playerId.Equals(_winningPlayer);
             }
             else
             {

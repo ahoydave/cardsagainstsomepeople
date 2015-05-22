@@ -131,7 +131,6 @@
     <Compile Include="Models\CahGame.cs" />
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\CardRepo.cs" />
-    <Compile Include="Models\GameRound.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

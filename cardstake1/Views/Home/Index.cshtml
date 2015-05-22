@@ -4,35 +4,58 @@
 
 <div class="panel panel-default">
     <div class="panel-heading" id="question_heading">Question</div>
-    <div class="panel-body" id="question_content"></div>
-    <button id="confirmButton" class="btn btn-default" disabled>Choose it.</button>
+    <div class="panel-body">
+        <button id="question_content">Click me for card</button>
+    </div>
 </div>
 
-<div class="btn-group-vertical" id="answers" >
-    
+<div class="col-lg-2">
+    <div class="btn-group-vertical" id="answers1"></div>
+    <div class="btn-group-vertical" id="answers2"></div>
 </div>
+
 
 @section scripts{
 <script type="text/javascript">
-    var answerCards = [];
     
     $(function () {
-        $.getJSON('../api/cardapi/Q', function (cardsPayload) {
-            $('#question_content').append(cardsPayload.text);
+        $("#question_content").click(function () {
+            console.log("Question requested");
+            $("#question_content").disabled = true;
+            $.getJSON('api/cardapi/Q', function (cardPayload) {
+                $("#question_content").text(cardPayload.text);
+                $("#question_content").disabled = false;
+            });
         });
-        for (i = 0; i < 30; i++) {
-            $.getJSON('../api/cardapi/A', function (cardsPayload) {
-                answerCards.push(cardsPayload);
-                $('#answers').append('<button type="button" class="btn btn-default ansCard">' + cardsPayload.text + '</button>');
+
+        for (i = 0; i < 10; i++) {
+            $.getJSON('api/cardapi/A', function (cardsPayload) {
+                $('#answers1').append('<button id=card' + cardsPayload.id + ' type="button" class="btn btn-default">' + cardsPayload.text + '</button>');
+                $('#card' + cardsPayload.id).click(function () {
+                    $.post('api/cardapi/player1/submitA', cardsPayload, function (data, status) {
+                        console.log("Card submitted by player 1: " + status);
+                    });
+                });
             });
         };
-        $(".ansCard").click(function () {
-            //this currently isn't getting called because the ansCard element array is empty at this point - the api calls haven't returned
-            //$(".ansCard").slideDown();
-            $('#confirmButton')[0].disabled = false;
-            $('#confirmButton')[0].textContent = "Choose: " + $(this)[0].textContent;
-            //$(this).slideUp();
-        });
+        //$(".ansCard").click(function () {
+        //    //this currently isn't getting called because the ansCard element array is empty at this point - the api calls haven't returned
+        //    //$(".ansCard").slideDown();
+        //    $('#confirmButton')[0].disabled = false;
+        //    $('#confirmButton')[0].textContent = "Choose: " + $(this)[0].textContent;
+        //    //$(this).slideUp();
+        //});
     });
+
+    var addAnswer = function (arr) {
+        $.getJSON('../api/cardapi/A', function (cardsPayload) {
+            arr.push(cardsPayload);
+        });
+
+        nswerCards.push(cardsPayload);
+        $('#answers').append('<button type="button" class="btn btn-default ansCard">' + cardsPayload.text + '</button>');
+    }
+
+    test1 = function() { $.post("api/cardapi/dave/submitA", answerCards[0], function (data, status) { alert(status + ", " + data); }); };
     </script>
 }

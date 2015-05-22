@@ -30,16 +30,16 @@ namespace cardstake1.Tests
 
             Assert.AreEqual(GameState.SubmitAnswers, game.GameState);
 
-            game.SubmitAnswer(cards1[0], 0);
-            game.SubmitAnswer(cards2[0], 1);
+            game.SubmitAnswer(cards1[0], "Bob");
+            game.SubmitAnswer(cards2[0], "Jane");
             var answers = game.GetSubmittedAnswers();
 
             Assert.AreEqual(GameState.PickWinner, game.GameState);
             game.ChooseAnswer(cards1[0]);
 
             Assert.AreEqual(GameState.RoundEnd, game.GameState);
-            Assert.IsTrue(game.CheckIfWon(0));
-            Assert.IsFalse(game.CheckIfWon(1));
+            Assert.IsTrue(game.CheckIfWon("Bob"));
+            Assert.IsFalse(game.CheckIfWon("Jane"));
 
             cards1[0] = game.DrawAnswerCard();
             cards2[0] = game.DrawAnswerCard();

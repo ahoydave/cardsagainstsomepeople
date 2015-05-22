@@ -13,33 +13,40 @@ namespace cardstake1.Controllers
 {
     public class CardApiController : ApiController
     {
-        // GET: api/CardApi
         [Route("api/cardapi/A"), HttpGet]
         public Card GetAnswer()
         {
-            throw new NotImplementedException();
+            return CahGame.Instance.DrawAnswerCard();
         }
 
         [Route("api/cardapi/Q"), HttpGet]
         public Card GetQuestion()
         {
-            throw new NotImplementedException();
+            return CahGame.Instance.GetQuestion();
         }
 
-        // POST: api/CardApi
-        public void Post([FromBody]string value)
+        [Route("api/cardapi/{playerid}/submitA"), HttpPost]
+        public void SubmitCard(String playerId, Card card)
         {
-
+            CahGame.Instance.SubmitAnswer(card, playerId);
         }
 
-        // PUT: api/CardApi/5
-        public void Put(int id, [FromBody]string value)
+        [Route("api/cardapi/getsubmittedAs"), HttpGet]
+        public IEnumerable<Card> GetSubmittedAs()
         {
+            return CahGame.Instance.GetSubmittedAnswers();
         }
 
-        // DELETE: api/CardApi/5
-        public void Delete(int id)
+        [Route("api/cardapi/chooseA"), HttpPost]
+        public void ChooseAnswer(Card card)
         {
+            CahGame.Instance.ChooseAnswer(card);
+        }
+
+        [Route("api/cardapi/{playerId}/didIwin"), HttpGet]
+        public bool ChooseAnswer(String playerId)
+        {
+            return CahGame.Instance.CheckIfWon(playerId);
         }
     }
 }
