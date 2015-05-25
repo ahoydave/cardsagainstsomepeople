@@ -10,7 +10,7 @@
     <div>Answers submitted: <span id="a_count">0</span></div>
 </div>
 
-<div class="col-lg-2">
+<div>
     <div class="btn-group-vertical" id="answers1"></div>
     <div class="btn-group-vertical" id="answers2"></div>
 </div>
@@ -18,6 +18,9 @@
 <div>
     <button id="get_answers">Get Submitted Answers</button>
     <div id="submitted_answers"></div>
+</div>
+<div id="end_round_announce">
+    <span id="winner">No winner yet...</span>
 </div>
 
 
@@ -36,6 +39,8 @@
             $.getJSON('../api/cardapi/Q', function (cardPayload) {
                 $("#question_content").text(cardPayload.text);
                 $("#question_content").disabled = false;
+                $("#get_answers").disabled = false;
+                //$("#end_round_announce").hidden = true;
             });
         });
 
@@ -70,17 +75,31 @@
         $("#get_answers").click(function () {
             console.log("Requested submitted answers");
             $("#get_answers").disabled = true;
-            //finish this
-        })
-
-
-        //$(".ansCard").click(function () {
-        //    //this currently isn't getting called because the ansCard element array is empty at this point - the api calls haven't returned
-        //    //$(".ansCard").slideDown();
-        //    $('#confirmButton')[0].disabled = false;
-        //    $('#confirmButton')[0].textContent = "Choose: " + $(this)[0].textContent;
-        //    //$(this).slideUp();
-        //});
+            $.getJSON('../api/cardapi/submittedAs', function (cards) {
+                $.each(cards, function (index, card) {
+                    $('#submitted_answers').append('<button id=A_card_' + card.id + ' type="button" class="btn btn-default">' + card.text + '</button>');
+                    $('#A_card_' + card.id).click(function () {
+                        $.post('../api/cardapi/chooseA', card, function (data, status) {
+                            console.log("Answer card chosen: " + status);
+                            //check if player 1 won
+                            $.get('../api/cardapi/player1/didiwin', function (I_won) {
+                                if (I_won) {
+                                    $('#winner').text("Player 1 wins!");
+                                    $('#end_round_announce').hidden = false;
+                                }
+                            })
+                            //check if player 2 won
+                            $.get('../api/cardapi/player2/didiwin', function (I_won) {
+                                if (I_won) {
+                                    $('#winner').text("Player 2 wins!");
+                                    $('#end_round_announce').hidden = false;
+                                }
+                            })
+                        });
+                    });
+                });
+            });
+        });
     });
 
     var addAnswer = function (arr) {

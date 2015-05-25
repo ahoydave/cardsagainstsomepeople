@@ -46,7 +46,7 @@ namespace cardstake1.Controllers
             return 0;
         }
 
-        [Route("api/cardapi/getsubmittedAs"), HttpGet]
+        [Route("api/cardapi/submittedAs"), HttpGet]
         public IEnumerable<Card> GetSubmittedAs()
         {
             return CahGame.Instance.GetSubmittedAnswers();

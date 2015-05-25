@@ -110,6 +110,7 @@ namespace cardstake1.Models
             {
                 _winningCard = answer;
                 _winningPlayer = _submittedAnswers.Where(x => x.Value.id == answer.id).First().Key;
+                _submittedAnswers.Clear();
                 GameState = GameState.RoundEnd;
             }
             else
