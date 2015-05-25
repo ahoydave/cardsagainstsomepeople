@@ -7,6 +7,7 @@
     <div class="panel-body">
         <button id="question_content">Click me for card</button>
     </div>
+    <div>Answers submitted: <span id="a_count">0</span></div>
 </div>
 
 <div class="col-lg-2">
@@ -14,30 +15,65 @@
     <div class="btn-group-vertical" id="answers2"></div>
 </div>
 
+<div>
+    <button id="get_answers">Get Submitted Answers</button>
+    <div id="submitted_answers"></div>
+</div>
+
 
 @section scripts{
 <script type="text/javascript">
-    
+
     $(function () {
+
+        $.get('../api/cardapi/newgame', function() {
+            console.log("New game request sent");
+        });
+
         $("#question_content").click(function () {
             console.log("Question requested");
             $("#question_content").disabled = true;
-            $.getJSON('api/cardapi/Q', function (cardPayload) {
+            $.getJSON('../api/cardapi/Q', function (cardPayload) {
                 $("#question_content").text(cardPayload.text);
                 $("#question_content").disabled = false;
             });
         });
 
         for (i = 0; i < 10; i++) {
-            $.getJSON('api/cardapi/A', function (cardsPayload) {
+            $.getJSON('../api/cardapi/A', function (cardsPayload) {
                 $('#answers1').append('<button id=card' + cardsPayload.id + ' type="button" class="btn btn-default">' + cardsPayload.text + '</button>');
                 $('#card' + cardsPayload.id).click(function () {
-                    $.post('api/cardapi/player1/submitA', cardsPayload, function (data, status) {
+                    $.post('../api/cardapi/player1/submitA', cardsPayload, function (data, status) {
                         console.log("Card submitted by player 1: " + status);
                     });
                 });
             });
         };
+
+        for (i = 0; i < 10; i++) {
+            $.getJSON('../api/cardapi/A', function (cardsPayload) {
+                $('#answers2').append('<button id=card' + cardsPayload.id + ' type="button" class="btn btn-default">' + cardsPayload.text + '</button>');
+                $('#card' + cardsPayload.id).click(function () {
+                    $.post('../api/cardapi/player2/submitA', cardsPayload, function (data, status) {
+                        console.log("Card submitted by player 2: " + status);
+                    });
+                });
+            });
+        };
+
+        setInterval(function () {
+            $.getJSON('../api/cardapi/numberAsubmitted', function (num) {
+                $("#a_count").text(num);
+            });
+        }, 100);
+
+        $("#get_answers").click(function () {
+            console.log("Requested submitted answers");
+            $("#get_answers").disabled = true;
+            //finish this
+        })
+
+
         //$(".ansCard").click(function () {
         //    //this currently isn't getting called because the ansCard element array is empty at this point - the api calls haven't returned
         //    //$(".ansCard").slideDown();
@@ -56,6 +92,6 @@
         $('#answers').append('<button type="button" class="btn btn-default ansCard">' + cardsPayload.text + '</button>');
     }
 
-    test1 = function() { $.post("api/cardapi/dave/submitA", answerCards[0], function (data, status) { alert(status + ", " + data); }); };
+    test1 = function() { $.post("../api/cardapi/dave/submitA", answerCards[0], function (data, status) { alert(status + ", " + data); }); };
     </script>
 }

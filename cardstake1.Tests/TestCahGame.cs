@@ -32,9 +32,16 @@ namespace cardstake1.Tests
 
             game.SubmitAnswer(cards1[0], "Bob");
             game.SubmitAnswer(cards2[0], "Jane");
+            
+            var numAnswers = game.GetNumberAnswersSubmitted();
+            Assert.AreEqual(2, numAnswers);
             var answers = game.GetSubmittedAnswers();
+            Assert.AreEqual(2, answers.Count());
 
             Assert.AreEqual(GameState.PickWinner, game.GameState);
+            numAnswers = game.GetNumberAnswersSubmitted();
+            Assert.AreEqual(2, numAnswers);
+
             game.ChooseAnswer(cards1[0]);
 
             Assert.AreEqual(GameState.RoundEnd, game.GameState);

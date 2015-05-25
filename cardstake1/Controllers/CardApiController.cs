@@ -13,6 +13,13 @@ namespace cardstake1.Controllers
 {
     public class CardApiController : ApiController
     {
+        //this obviously doesn't fit the REST paradigm well...
+        [Route("api/cardapi/newgame"), HttpGet]
+        public int ResetGame() {
+            CahGame.ResetGame();
+            return 1;
+        }
+
         [Route("api/cardapi/A"), HttpGet]
         public Card GetAnswer()
         {
@@ -29,6 +36,14 @@ namespace cardstake1.Controllers
         public void SubmitCard(String playerId, Card card)
         {
             CahGame.Instance.SubmitAnswer(card, playerId);
+        }
+
+        [Route("api/cardapi/numberAsubmitted"), HttpGet]
+        public int GetNumberASubmitted()
+        {
+            if (CahGame.Instance.GameState == GameState.SubmitAnswers || CahGame.Instance.GameState == GameState.PickWinner)
+                return CahGame.Instance.GetNumberAnswersSubmitted();
+            return 0;
         }
 
         [Route("api/cardapi/getsubmittedAs"), HttpGet]

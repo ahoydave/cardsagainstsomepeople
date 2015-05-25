@@ -20,6 +20,11 @@ namespace cardstake1.Models
             }
         }
 
+        public static void ResetGame()
+        {
+            _instance = new CahGame();
+        }
+
         private CardRepo _cards = null;
         private Card _winningCard;
         private String _winningPlayer;
@@ -71,6 +76,18 @@ namespace cardstake1.Models
             else
             {
                 throw new Exception("Tried to submit an answer when game was in the state " + GameState);
+            }
+        }
+
+        public int GetNumberAnswersSubmitted()
+        {
+            if (GameState == GameState.SubmitAnswers || GameState == GameState.PickWinner)
+            {
+                return _submittedAnswers.Count;
+            }
+            else
+            {
+                throw new Exception("Tried to get submitted answers when game was in state " + GameState);
             }
         }
 
