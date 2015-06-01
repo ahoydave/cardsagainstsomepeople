@@ -81,6 +81,8 @@
                     $('#A_card_' + card.id).click(function () {
                         $.post('../api/cardapi/chooseA', card, function (data, status) {
                             console.log("Answer card chosen: " + status);
+                            //clear the submitted answers
+                            $("#submitted_answers").empty();
                             //check if player 1 won
                             $.get('../api/cardapi/player1/didiwin', function (I_won) {
                                 if (I_won) {
