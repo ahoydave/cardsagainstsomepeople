@@ -18,6 +18,11 @@ namespace cardstake1.Controllers
             return View();
         }
 
+        public ActionResult TestGame()
+        {
+            return View();
+        }
+
         public ActionResult About()
         {
             if (_theCards == null)
